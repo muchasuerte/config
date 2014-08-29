@@ -1,34 +1,39 @@
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/vundle
+call vundle#begin()
 
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 " fugitive vim plugin for git
-Bundle 'tpope/vim-fugitive'
+Plugin 'tpope/vim-fugitive'
 
-" ...rest of bundles
-Bundle 'fholgado/minibufexpl.vim'
+" ...rest of Plugins
+Plugin 'fholgado/minibufexpl.vim'
 
-Bundle 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdtree'
 
 " A code-completion engine for Vim:
 " require plugin build:
-" 	~/.vim/bundle/YouCompleteMe$ ./install.sh --clang-completer
+" 	~/.vim/Plugin/YouCompleteMe$ ./install.sh --clang-completer
 " 	fix for ubuntu : sudo ln -s /usr/lib/llvm-3.4/lib /usr/lib/llvm
 " 	sudo apt-get install libclang-3.4-dev
 " 	./install.sh --clang-completer --system-libclang
-Bundle 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 
 "  Syntax checking hacks for vim
-Bundle 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
 
 " A forked script for vim auto reloading of buffers when changed on disk.
-Bundle 'mutewinter/vim-autoreadwatch'
+Plugin 'mutewinter/vim-autoreadwatch'
 
-" Bundle "pangloss/vim-javascript"
+" Plugin "pangloss/vim-javascript"
 
 " Extended session management for Vim (:mksession on steroids)
-Bundle 'vim-misc'
-Bundle 'xolox/vim-session'
+Plugin 'vim-misc'
+Plugin 'xolox/vim-session'
+Plugin 'jceb/vim-orgmode'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+
