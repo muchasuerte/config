@@ -33,6 +33,7 @@ Plugin 'mutewinter/vim-autoreadwatch'
 Plugin 'vim-misc'
 Plugin 'xolox/vim-session'
 Plugin 'jceb/vim-orgmode'
+Plugin 'tpope/vim-speeddating'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
