@@ -39,3 +39,11 @@ install vim vundle and vim plugin configuration files
 [vim-session](https://github.com/xolox/vim-session)
 
 ### vim-commands
+
+## Grub Utils 
+* copy 60_isoboot to /etc/grub.d/60_isoboot
+* make dir /boot/images
+* Then place your ISO in the directory /boot/images/
+* Now just run "update-grub" and the ISO will automatically be added to the  
+  GRUB boot menu, and you can boot from it directly from the GRUB boot menu.
+
