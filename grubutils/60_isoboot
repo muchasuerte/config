@@ -8,13 +8,14 @@ while read image; do
     IMAGEPATH=$( make_system_path_relative_to_its_root "$image" )
     echo "Found ISO image: $IMAGEPATH" >&2
     #now we need to find out what the initrd file is called
+    VMLINUX="$(isoinfo -l -i "$IMAGEPATH" | egrep -o VMLINUZ*.* | sed 's/;1 $//' | tr '[A-Z]' '[a-z]' )"
     INITRD="$(isoinfo -l -i "$IMAGEPATH" | egrep -o INITRD*.* | sed 's/;1 $//' | tr '[A-Z]' '[a-z]' )"
 
 cat << EOF
 menuentry "Bootable ISO: $(basename $IMAGEPATH | sed s/.iso//)" {
  loopback loop $image
  set gfxpayload=keep
- linux  (loop)/casper/vmlinuz boot=casper iso-scan/filename=$image noeject noprompt --
+ linux  (loop)/casper/$VMLINUX boot=casper iso-scan/filename=$image noeject noprompt --
  initrd (loop)/casper/$INITRD
 }
 EOF

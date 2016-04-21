@@ -42,6 +42,7 @@ install vim vundle and vim plugin configuration files
 
 ## Grub Utils 
 * copy 60_isoboot to /etc/grub.d/60_isoboot
+* chmod a+x /etc/grub.d/60_isoboot
 * make dir /boot/images
 * Then place your ISO in the directory /boot/images/
 * Now just run "update-grub" and the ISO will automatically be added to the  
