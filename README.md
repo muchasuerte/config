@@ -39,7 +39,7 @@ install vim vundle and vim plugin configuration files
 [vim-session](https://github.com/xolox/vim-session)
 
 ### vim-commands
- * <Leader\> key is mapped to '\' by default.
+ * &lt;Leader&gt; key is mapped to '\' by default.
 
 #### vertically/horizontal split windows
 
