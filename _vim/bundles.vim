@@ -19,7 +19,10 @@ Plugin 'scrooloose/nerdtree'
 " 	fix for ubuntu : sudo ln -s /usr/lib/llvm-3.4/lib /usr/lib/llvm
 " 	sudo apt-get install libclang-3.4-dev
 " 	./install.sh --clang-completer --system-libclang
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
+
+" A Python code-completion
+Plugin 'davidhalter/jedi-vim'
 
 "  Syntax checking hacks for vim
 Plugin 'scrooloose/syntastic'
