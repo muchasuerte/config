@@ -39,17 +39,18 @@ install vim vundle and vim plugin configuration files
 [vim-session](https://github.com/xolox/vim-session)
 
 ### vim-commands
-<Leader> key is mapped to \ by default.
+ * <Leader\> key is mapped to '\' by default.
 
 #### vertically/horizontal split windows
 
-Ctrl+W, S (upper case) for horizontal splitting
-Ctrl+W, v (lower case) for vertical splitting
-Ctrl+W, Q to close one
-Ctrl+W, Ctrl+W to switch between windows
-Ctrl+W, J (xor K, H, L) to switch to adjacent window (intuitively up, down, left, right)
+* Ctrl+W, S (upper case) for horizontal splitting
+* Ctrl+W, v (lower case) for vertical splitting
+* Ctrl+W, Q to close one
+* Ctrl+W, Ctrl+W to switch between windows
+* Ctrl+W, J (xor K, H, L) to switch to adjacent window (intuitively up, down, left, right)
 
-## Grub Utils 
+
+## Grub Utils
 * copy 60_isoboot to /etc/grub.d/60_isoboot
 * chmod a+x /etc/grub.d/60_isoboot
 * make dir /boot/images
