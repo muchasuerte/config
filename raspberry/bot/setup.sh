@@ -24,7 +24,7 @@ User=pi
 ExecStart=$1/ftbot.sh
 WorkingDirectory=$1
 Restart=always
-RemainAfterExit=yes
+RemainAfterExit=no
 
 [Install]
 WantedBy=multi-user.target
@@ -36,7 +36,7 @@ EOF
     systemctl enable ftbot.service
 }
 
-systemd_init() {
+uwsgi_init() {
     UWSGI_FTBOT=$(cat <<EOF
 [uwsgi]
 uid = pi
@@ -44,15 +44,23 @@ gid = pi
 processes = 1
 master = 1
 plugin = python3
-virtualenv = /home/pi/bot/env
+virtualenv = $1/env
 http-socket = 127.0.0.1:5000
 module = ft_bot:app
 enable-threads = true
-chdir = /home/pi/bot
+chdir = $1
 EOF
+    )
 
     echo -n "$UWSGI_FTBOT" > /etc/uwsgi/apps-enabled/ftbot.ini
     service uwsgi reload
+}
+
+check_superuser() {
+    if [ "$(id -u)" != "0" ]; then
+        echo "Super user required"
+        exit 1
+    fi
 }
 
 case $1 in
@@ -60,15 +68,29 @@ case $1 in
         venv_init
     ;;
     system)
-        if [ "$(id -u)" != "0" ]; then
-            echo "Super user required"
-            exit 1
-        fi
-
-        apt-get install -y uwsgi uwsgi-plugin-python3
+        check_superuser
         systemd_init "$(dirname $(readlink -f $0))"
     ;;
+    uwsgi)
+        check_superuser
+        apt-get install -y uwsgi uwsgi-plugin-python3
+        uwsgi_init "$(dirname $(readlink -f $0))"
+    ;;
+    apcups)
+        check_superuser
+        cp default.httptrigger /etc/apcupsd/onbattery
+        cp default.httptrigger /etc/apcupsd/offbattery
+    ;;
+    logs)
+        check_superuser
+        if [ -e "/etc/systemd/system/ftbot.service" ]; then
+            journalctl -u ftbot.service -fn
+        fi
+        if [ -e "/etc/uwsgi/apps-enabled/ftbot.ini" ]; then
+            tailf /var/log/uwsgi/app/ftbot.log
+        fi        
+    ;;
     *)
-        echo "Usage: $0 venv|system"
+        echo "Usage: $0 venv|system|apcups"
     ;;
 esac

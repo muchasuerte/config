@@ -1,0 +1,4 @@
+#!/bin/sh
+HTTP_PATH=$(basename $0)
+
+curl http://127.0.0.1:5000/ups/$HTTP_PATH

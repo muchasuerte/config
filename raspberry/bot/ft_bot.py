@@ -54,8 +54,8 @@ app = Flask(__name__)
 def welcome():
     return "Welcome to Flask Telegram bot!"
 
-@app.route('/lost_power')
-def lost_power():
+@app.route('/ups/<state>')
+def ups_state(state):
     idlist = []
     try:
         with open('pickle.db', 'br') as fd:
@@ -63,30 +63,13 @@ def lost_power():
     except Exception as ex:
         logger.error(ex)
 
+    output = check_output("apcaccess status", stderr=subprocess.STDOUT, shell=True)
+    output = output.decode('utf-8')
     for cid in idlist:
-        logger.info('callback_minute!' + str(cid))
         bot.send_message(
             chat_id=cid,
-            text='lost power')
-    return "done!"
-
-
-@app.route('/power_on')
-def power_on():
-    idlist = []
-    try:
-        with open('pickle.db', 'br') as fd:
-            idlist = pickle.load(fd)
-    except Exception as ex:
-        logger.error(ex)
-
-    for cid in idlist:
-        logger.info('callback_minute!' + str(cid))
-        bot.send_message(
-            chat_id=cid,
-            text='power_on!')
-    return "done!"
-
+            text='[ups] {state} \n{output}!'.format(state=state, output=output))
+    return "{state} done!".format(state=state)
 
 @restricted
 def echo(bot, update):
@@ -102,20 +85,18 @@ dispatcher.add_handler(echo_handler)
 def ups(bot, update):
     """
 
-    :param bot: (telegram.bot)
-    :param update: (telegram.Updater)
+    :param bot: (::telegram.bot)
+    :param update: (::telegram.Updater)
     :return:
     """
     custom_keyboard = [
             ['/info'],
-            ['/start'],
-            ['/status']
         ]
     logger.info(update)
     reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
     bot.send_message(chat_id=update.message.chat_id,
-                    text="Custom Keyboard Test",
-                    reply_markup=reply_markup)
+                     text="UPS utility",
+                     reply_markup=reply_markup)
 
 ups_handler = CommandHandler('ups', ups)
 dispatcher.add_handler(ups_handler)
@@ -129,26 +110,13 @@ def info(bot, update):
     :return:
     """
     logger.info(update)
+    output = check_output("apcaccess status", stderr=subprocess.STDOUT, shell=True)
+    output = output.decode('utf-8')
     bot.send_message(chat_id=update.message.chat_id,
-                    text="info")
+                    text=output)
 
 info_handler = CommandHandler('info', info)
 dispatcher.add_handler(ups_handler)
-
-@restricted
-def status(bot, update):
-    """
-
-    :param bot: (telegram.bot)
-    :param update: (telegram.Updater)
-    :return:
-    """
-    output = check_output("apcaccess status", stderr=subprocess.STDOUT, shell=True)
-    bot.send_message(chat_id=update.message.chat_id,
-                    text=str(output))
-
-status_handler = CommandHandler('status', status)
-dispatcher.add_handler(status_handler)
 
 
 def error(bot, update, error):
